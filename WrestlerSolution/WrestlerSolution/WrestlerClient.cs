@@ -10,9 +10,9 @@ namespace WrestlerSolution
     {
         RestAPIClientInfrastructure _client;
 
-        public WrestlerClient(string login, string pass, string sessionCookie)
+        public WrestlerClient(string login, string pass)
         {
-            _client = new RestAPIClientInfrastructure(login, pass, sessionCookie );
+            _client = new RestAPIClientInfrastructure(login, pass);
         }
 
         public string ReadWrestlerById(int wreslerId)

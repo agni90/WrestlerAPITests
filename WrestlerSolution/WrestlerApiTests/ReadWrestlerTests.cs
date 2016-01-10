@@ -13,7 +13,7 @@ namespace WrestlerApiTests
         {
             //Assign
             int testId = 3629;
-            var client = new WrestlerClient("auto", "test", "bdp9fmp9r7upcjdg1985e14s15");
+            var client = new WrestlerClient("auto", "test");
             //Act
             var response = client.ReadWrestlerById(testId);
             var wrestler = Converter.JsonResponseToWrestler(response);

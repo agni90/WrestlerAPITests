@@ -16,10 +16,17 @@ namespace WrestlerSolution
         private readonly string _sessionCookieValue;
         private readonly string _sessionCookieId = "PHPSESSID";
 
-        public RestAPIClientInfrastructure(string login, string pass, string SessionCookie)
+        public RestAPIClientInfrastructure(string login, string pass)
         {
             _client = new RestClient(_baseURL) { Authenticator = new HttpBasicAuthenticator(login, pass) };
-            _sessionCookieValue = SessionCookie;
+            var cookie = GetCookiePostMethod();
+            _sessionCookieValue = cookie;
+
+        }
+
+        public RestAPIClientInfrastructure()
+        {
+            _client = new RestClient(_baseURL);
         }
 
         public string GetMethod(string requestUrl)
@@ -41,6 +48,17 @@ namespace WrestlerSolution
             request.RequestFormat = DataFormat.Json;
             IRestResponse response = _client.Execute(request);
             return response.Content;
+        }
+
+        private string GetCookiePostMethod()
+        {
+            string requestUrl = "php/login.php";
+            string jsonToSend = "{ \"username\":\"auto\",\"password\":\"test\"}";
+            var request = new RestRequest(requestUrl, Method.POST);
+            request.AddParameter("application/json; charset=utf-8", jsonToSend, ParameterType.RequestBody);
+            request.RequestFormat = DataFormat.Json;
+            IRestResponse response = _client.Execute(request);
+            return response.Cookies[0].Value;
         }
     }
 }

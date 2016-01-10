@@ -69,7 +69,7 @@ namespace WrestlerApiTests
                 expires = 2015
             };
             var wrestlerJson = Converter.SimpleWrestlerToJsonRequest(wrestler);
-            var client = new WrestlerClient("auto", "test", "qnagib35cjgc8sm1mr4epest54");
+            var client = new WrestlerClient("auto", "test");
             //Act
             var result = client.CreateWrestler(wrestlerJson);
             //Assert
