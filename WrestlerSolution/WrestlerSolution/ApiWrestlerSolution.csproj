@@ -79,7 +79,10 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
+    <Compile Include="Exceptions\UserCreationFailedException.cs" />
+    <Compile Include="Models\Requests\CreateWrestlerRequest.cs" />
     <Compile Include="Models\Requests\DeleteWrestlerRequest.cs" />
+    <Compile Include="Models\Responses\CreateWrestlerResponse.cs" />
     <Compile Include="Models\Responses\DeleteWrestlerResponse.cs" />
     <Compile Include="Models\SimpleWrestler.cs" />
     <Compile Include="Models\Wrestler.cs" />

@@ -35,14 +35,13 @@ namespace WrestlerSolution
             return response.Content;
         }
 
-        public string PostMethod(string requestUrl, string jsonToSend)
+        public IRestResponse PostMethod(string requestUrl, string jsonToSend)
         {
             var request = new RestRequest(requestUrl, Method.POST);
             request.AddCookie(_sessionCookieId, _sessionCookieValue);
             request.AddParameter("application/json; charset=utf-8", jsonToSend, ParameterType.RequestBody);
             request.RequestFormat = DataFormat.Json;
-            IRestResponse response = _client.Execute(request);
-            return response.Content;
+            return  _client.Execute(request);
         }
 
         public IRestResponse DeleteMethod(string requestUrl)

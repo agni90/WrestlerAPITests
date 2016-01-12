@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
+using System.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WrestlerSolution;
+using WrestlerSolution.Exceptions;
 using WrestlerSolution.Models;
+using WrestlerSolution.Models.Requests;
+using WrestlerSolution.Models.Responses;
 
 namespace WrestlerApiTests
 {
@@ -36,100 +38,106 @@ namespace WrestlerApiTests
         public void When_AllFieldsAreFilledByCorrectData_Expect_SuccessfulUseCreation()
         {
             //Assign
-            var wrestler = new SimpleWrestler
+            var request = new CreateWrestlerRequest
             {
-                fname = "test",
-                lname = "test",
-                mname = "test",
-                dob = "25-05-1994",//DateTime.Now.ToString("dd-MM-yyyy"),
-                region1 = 3,
-                fst1 = 2,
-                style = 1,
-                lictype = 1,
-                card_state = 1,
-                expires = 2015
+                Wrestler = new SimpleWrestler
+                {
+                    fname = "test",
+                    lname = "test",
+                    mname = "test",
+                    dob = "25-05-1994",//DateTime.Now.ToString("dd-MM-yyyy"),
+                    region1 = 3,
+                    fst1 = 2,
+                    style = 1,
+                    lictype = 1,
+                    card_state = 1,
+                    expires = 2015
+                }
             };
-            var wrestlerJson = Converter.SimpleWrestlerToJsonRequest(wrestler);
+
             var client = new WrestlerClient("auto", "test");
             //Act
-            var result = client.CreateWrestler(wrestlerJson);
+            var response = client.CreateWrestler(request);
             //Assert
-            Assert.IsNotNull(result);
-         }
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.id > 0);
+            Assert.IsTrue(response.result);
+        }
 
         [TestMethod]
+        [ExpectedException(typeof(UserCreationFailedException))]
         public void When_FirstNameFieldIsEmpty_Expect_Error()
         {
             //Assign
-            var wrestler = new SimpleWrestler
+            var request = new CreateWrestlerRequest
             {
-                fname = "",
-                lname = "test",
-                mname = "test",
-                dob = "25-05-1994",//DateTime.Now.ToString("dd-MM-yyyy"),
-                region1 = 3,
-                fst1 = 2,
-                style = 1,
-                lictype = 1,
-                card_state = 1,
-                expires = 2015
+                Wrestler = new SimpleWrestler
+                {
+                    fname = "",
+                    lname = "test",
+                    mname = "test",
+                    dob = "25-05-1994",//DateTime.Now.ToString("dd-MM-yyyy"),
+                    region1 = 3,
+                    fst1 = 2,
+                    style = 1,
+                    lictype = 1,
+                    card_state = 1,
+                    expires = 2015
+                }
             };
-            var wrestlerJson = Converter.SimpleWrestlerToJsonRequest(wrestler);
             var client = new WrestlerClient("auto", "test");
             //Act
-            var result = client.CreateWrestler(wrestlerJson);
-            //Assert
-            Assert.Fail();
+            var result = client.CreateWrestler(request);
         }
 
-        [TestMethod]
-        public void When_DobFieldIsEmpty_Expect_Error()
-        {
-            //Assign
-            var wrestler = new SimpleWrestler
-            {
-                fname = "test",
-                lname = "test",
-                mname = "test",
-                dob = "",//DateTime.Now.ToString("dd-MM-yyyy"),
-                region1 = 3,
-                fst1 = 2,
-                style = 1,
-                lictype = 1,
-                card_state = 1,
-                expires = 2015
-            };
-            var wrestlerJson = Converter.SimpleWrestlerToJsonRequest(wrestler);
-            var client = new WrestlerClient("auto", "test");
-            //Act
-            var result = client.CreateWrestler(wrestlerJson);
-            //Assert
-            Assert.Fail();
-        }
+        //[TestMethod]
+        //public void When_DobFieldIsEmpty_Expect_Error()
+        //{
+        //    //Assign
+        //    var wrestler = new SimpleWrestler
+        //    {
+        //        fname = "test",
+        //        lname = "test",
+        //        mname = "test",
+        //        dob = "",//DateTime.Now.ToString("dd-MM-yyyy"),
+        //        region1 = 3,
+        //        fst1 = 2,
+        //        style = 1,
+        //        lictype = 1,
+        //        card_state = 1,
+        //        expires = 2015
+        //    };
+        //    var wrestlerJson = Converter.SimpleWrestlerToJsonRequest(wrestler);
+        //    var client = new WrestlerClient("auto", "test");
+        //    //Act
+        //    var result = client.CreateWrestler(wrestlerJson);
+        //    //Assert
+        //    Assert.Fail();
+        //}
 
-        [TestMethod]
-        public void When_DobWasEnteredInWrongFormat_Expect_Error()
-        {
-            //Assign
-            var wrestler = new SimpleWrestler
-            {
-                fname = "test",
-                lname = "test",
-                mname = "test",
-                dob = "20150907",//DateTime.Now.ToString("dd-MM-yyyy"),
-                region1 = 3,
-                fst1 = 2,
-                style = 1,
-                lictype = 1,
-                card_state = 1,
-                expires = 2015
-            };
-            var wrestlerJson = Converter.SimpleWrestlerToJsonRequest(wrestler);
-            var client = new WrestlerClient("auto", "test");
-            //Act
-            var result = client.CreateWrestler(wrestlerJson);
-            //Assert
-            Assert.Fail();
-        }
+        //[TestMethod]
+        //public void When_DobWasEnteredInWrongFormat_Expect_Error()
+        //{
+        //    //Assign
+        //    var wrestler = new SimpleWrestler
+        //    {
+        //        fname = "test",
+        //        lname = "test",
+        //        mname = "test",
+        //        dob = "20150907",//DateTime.Now.ToString("dd-MM-yyyy"),
+        //        region1 = 3,
+        //        fst1 = 2,
+        //        style = 1,
+        //        lictype = 1,
+        //        card_state = 1,
+        //        expires = 2015
+        //    };
+        //    var wrestlerJson = Converter.SimpleWrestlerToJsonRequest(wrestler);
+        //    var client = new WrestlerClient("auto", "test");
+        //    //Act
+        //    var result = client.CreateWrestler(wrestlerJson);
+        //    //Assert
+        //    Assert.Fail();
+        //}
     }
 }

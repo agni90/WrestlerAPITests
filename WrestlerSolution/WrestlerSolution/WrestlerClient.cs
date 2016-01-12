@@ -21,10 +21,18 @@ namespace WrestlerSolution
             return _client.GetMethod(url);
         }
 
-        public string CreateWrestler(string wrestlerJson)
+        public CreateWrestlerResponse CreateWrestler(CreateWrestlerRequest wrestlerRequest)
         {
             string url = "php/wrestler/create.php";
-            return _client.PostMethod(url, wrestlerJson);
+            var wrestlerJson = Converter.SimpleWrestlerToJsonRequest(wrestlerRequest.Wrestler);
+            var response = _client.PostMethod(url, wrestlerJson);
+            if (response.StatusCode == HttpStatusCode.OK)
+                return JsonConvert.DeserializeObject<CreateWrestlerResponse>(response.Content);
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new UserCreationFailedException(response.ErrorMessage);
+            }
+            return null;
         }
 
         public DeleteWrestlerResponse DeleteWrestler(DeleteWrestlerRequest request)
