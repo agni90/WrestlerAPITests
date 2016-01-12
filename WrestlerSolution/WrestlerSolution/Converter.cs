@@ -12,17 +12,13 @@ namespace WrestlerSolution
     {
         public static SimpleWrestler JsonResponseToSimpleWrestler(string responseContent)
         {
-            // todo add validation on response
             SimpleWrestler simpleWrestler = JsonConvert.DeserializeObject<SimpleWrestler>(responseContent);
-            //todo check that Tst object is good
             return simpleWrestler;
         }
 
         public static Wrestler JsonResponseToWrestler(string responseContent)
         {
-            // todo add validation on response
             Wrestler simpleWrestler = JsonConvert.DeserializeObject<Wrestler>(responseContent);
-            //todo check that Tst object is good
             return simpleWrestler;
         }
 

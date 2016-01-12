@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WrestlerSolution.Models.Requests;
+using WrestlerSolution.Models.Responses;
+using WrestlerSolution.Exceptions;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace WrestlerSolution
 {
@@ -23,8 +23,27 @@ namespace WrestlerSolution
 
         public string CreateWrestler(string wrestlerJson)
         {
-            string url= "php/wrestler/create.php";
+            string url = "php/wrestler/create.php";
             return _client.PostMethod(url, wrestlerJson);
+        }
+
+        public DeleteWrestlerResponse DeleteWrestler(DeleteWrestlerRequest request)
+        {
+            string url = string.Format("php/wrestler/delete.php?id={0}", request.Id);
+            var response = _client.DeleteMethod(url);
+            if (response.StatusCode == HttpStatusCode.OK)
+                return JsonConvert.DeserializeObject<DeleteWrestlerResponse>(response.Content);
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new NotFoundException(response.StatusCode);
+            }
+            return null;
+        }
+
+        public string UpdateWrestlerAccount(string wrestlerJson)
+        {
+            string url = "php/wrestler/update.php";
+            return _client.UpdateMethod(url, wrestlerJson);
         }
     }
 }
